@@ -1,7 +1,9 @@
 # Learnable Python Chess
 
 Learnable Python Chess is a github repository designed to showcase a chess in Python program that aims to teach Python programmers how to create a chess application.
+
 While beginning to learn to program, a good way to learn is to create and finish projects. A chess project is as good as any other.
+
 I found there weren't many good resources which I could use to learn how to program chess in Python.
 The best one I found was Simple Python Chess (https://github.com/liudmil-mitev/Simple-Python-Chess), but this was created for Python 2.5+, and it's not been updated since.
 
