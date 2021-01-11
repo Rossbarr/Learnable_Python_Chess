@@ -13,7 +13,7 @@ class Bishop(Piece):
     """
 
 
-    def __init__(self, color, board, pos):
+    def __init__(self, color: str, board: object, pos: list):
         """
         When a Bishop is initialized, it needs 6 attributes.
         4 of them are defined in the piece parent class,

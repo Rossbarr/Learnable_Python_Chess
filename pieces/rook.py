@@ -12,7 +12,7 @@ class Rook(Piece):
         moves() and grow_unblocked_moves_in_dir()
     """
 
-    def __init__(self, color, board, pos):
+    def __init__(self, color: str, board: object, pos: list):
         """
         When a Rook is initialized, it needs 6 attributes.
         4 of them are defined in the piece parent class,

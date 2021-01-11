@@ -5,7 +5,7 @@ class Pawn(Piece):
     Pawn inherits from Piece.
     """
 
-    def __init__(self, color, board, pos):
+    def __init__(self, color: str, board: object, pos: list):
         """
         When a Pawn is initialized, it needs 6 attributes.
         4 of them are defined in the piece parent class,
@@ -20,7 +20,7 @@ class Pawn(Piece):
         self.symbol = "p"
         self.forward = self.__forward_dir()
 
-    def moves(self):
+    def moves(self) -> list:
         """
         Returns a list of the possible forward movements and diagonal attacks
         given the current positioning of the Pawn and nearby pieces.
@@ -32,7 +32,7 @@ class Pawn(Piece):
         
         return result
 
-    def __forward_dir(self):
+    def __forward_dir(self) -> list:
         """
         Sets forward direction.
         """
@@ -46,7 +46,7 @@ class Pawn(Piece):
 
         return forward
 
-    def __forward_steps(self):
+    def __forward_steps(self) -> list:
         """
         Returns a list of forward moves.
         This checks if there's anything blocking the Pawn,
@@ -66,7 +66,7 @@ class Pawn(Piece):
 
         return moves
 
-    def __side_attacks(self):
+    def __side_attacks(self) -> list:
         """
         Returns a list of diagonal attacks the Pawn can make
         """

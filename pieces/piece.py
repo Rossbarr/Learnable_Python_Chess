@@ -4,7 +4,7 @@ Piece is a parent of all "piece-type" objects (e.g. pawn, queen, knight, etc.) a
 """
 
 class Piece():
-    def __init__(self, color, board, pos):
+    def __init__(self, color: str, board: object, pos: list):
         """
         When a piece is initialized, it has 4 attributes.
         Each of these attributes helps decide when and how a piece can move.
@@ -26,7 +26,7 @@ class Piece():
         self.pos = pos
         self.moved = False
 
-    def moves(self):
+    def moves(self) -> list:
         """
         This method is to be overwritten by all child class pieces.
         
@@ -36,7 +36,7 @@ class Piece():
         """
         return []
 
-    def valid_moves(self):
+    def valid_moves(self) -> list:
         """
         valid_moves() takes the list of possible moves (from moves()) and narrows it further.
         If a move doesn't place the user into check, the move is valid.
@@ -49,7 +49,7 @@ class Piece():
                 valid_moves.append(move)
         return valid_moves
 
-    def __moves_into_check(self, end_pos):
+    def __moves_into_check(self, end_pos: str) -> bool:
         """
         This method creates a deepcopy of the board and executes a move.
         If the move results in a check upon oneself

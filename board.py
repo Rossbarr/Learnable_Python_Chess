@@ -58,7 +58,7 @@ class Board:
         self.__fill_back_row()
         self.__fill_pawns_row()
 
-    def move(self, color, start_pos, end_pos, *promotion):
+    def move(self, color: str, start_pos: list, end_pos: list, promotion: str = "") -> None:
         """
         move, as the name implies, moves a piece from one square to another.
         The Game object will call this method, giving:
@@ -86,16 +86,16 @@ class Board:
         elif end_pos not in self.rows[a, b].valid_moves():
             raise Exception("Moving into check")
 
-        self._execute_move(color, start_pos, end_pos, *promotion)
+        self._execute_move(color, start_pos, end_pos, promotion)
 
-    def valid(self, pos):
+    def valid(self, pos: list) -> bool:
         """
         Checks if the position given is on the board.
         """
         x, y = pos[0], pos[1]
         return (0 <= x < 8 and 0 <= y < 8)
 
-    def empty(self, pos):
+    def empty(self, pos: list) -> bool:
         """
         Checks if the position given is empty.
         Remember that self.nothing is the NullPiece we initialized
@@ -104,7 +104,7 @@ class Board:
         """
         return (self.rows[pos[0], pos[1]] == self.nothing)
 
-    def checkmate(self, color):
+    def checkmate(self, color: str) -> bool:
         """
         Checks for checkmate on the color given.
         """
@@ -122,7 +122,7 @@ class Board:
         # Otherwise we're in checkmate.
         return True
 
-    def in_check(self, color):
+    def in_check(self, color: str) -> bool:
         """
         Check if the color is in check.
         """
@@ -149,7 +149,7 @@ class Board:
         # Otherwise we're not.
         return False
     
-    def find_pieces(self, color):
+    def find_pieces(self, color: str) -> list:
         """
         Find all the pieces of a color.
         """
@@ -160,7 +160,7 @@ class Board:
                     pieces.append(self.rows[i, j])
         return pieces
 
-    def find_king(self, color):
+    def find_king(self, color: str) -> list:
         """
         Find the king of a color.
         """
@@ -170,7 +170,7 @@ class Board:
                     return [i, j]
         raise Exception("King not found")
 
-    def _execute_move(self, color, start_pos, end_pos, *promotion):
+    def _execute_move(self, color: str, start_pos: list, end_pos: list, promotion: str = "") -> None:
         """
         This method executes a move without doing any checks.
         As in, this is the method that actually does the moving.
@@ -195,7 +195,7 @@ class Board:
         # If we're trying to promote...
         elif (piece.symbol == "p" and 
                 (x == 0 or x == 7)):
-            self.__promote_pawn(color, start_pos, end_pos, *promotion)
+            self.__promote_pawn(color, start_pos, end_pos, promotion)
         # If we want to play en passent...
         elif (piece.symbol == "p" and
                 self.last_move[0].symbol == "p" and
@@ -272,7 +272,7 @@ class Board:
             # set the last move
             self.last_move = (king, start_pos, end_pos)
 
-    def __en_passent(self, color, start_pos, end_pos):
+    def __en_passent(self, color: str, start_pos: list, end_pos: list) -> None:
         """
         This method handles the logic for playing en passent
 
@@ -292,7 +292,7 @@ class Board:
         self.rows[a, b] = self.nothing
         self.last_move = (piece, start_pos, end_pos)
 
-    def __promote_pawn(self, color, start_pos, end_pos, promotion):
+    def __promote_pawn(self, color: str, start_pos: list, end_pos: list, promotion: str) -> None:
         """
         This method handles the logic for promoting
 
@@ -321,7 +321,7 @@ class Board:
         self.rows[a, b] = self.nothing
         self.last_move = (piece, start_pos, end_pos)        
 
-    def __fill_back_row(self):
+    def __fill_back_row(self) -> None:
         """
         This method fills rows 0 and 7, the rows on opposite sides.
         """
@@ -347,7 +347,7 @@ class Board:
                 piece = back_row[j] 
                 self.rows[i, j] = piece(color, self, [i, j])
 
-    def __fill_pawns_row(self):
+    def __fill_pawns_row(self) -> None:
         """
         This method fills the rows holding all the pawns, rows 1 and 6.
         It works very similarly to __fill_back_row().

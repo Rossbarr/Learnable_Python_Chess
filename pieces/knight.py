@@ -5,7 +5,7 @@ class Knight(Piece):
     Knight inherits from Piece.
     """
 
-    def __init__(self, color, board, pos):
+    def __init__(self, color: str, board: object, pos: list):
         """
         When a Knight is initialized, it needs 6 attributes.
         4 of them are defined in the piece parent class,
@@ -20,7 +20,7 @@ class Knight(Piece):
         self.symbol = "N"
         self._move_diffs = [[1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1], [-1, 2]]
 
-    def moves(self):
+    def moves(self) -> list:
         """
         This methods gets the possible movement options from _move_diffs.
         It then checks if those moves are allowed:

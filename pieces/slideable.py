@@ -11,7 +11,7 @@ They do this by asking for the constants defined immediately below.
 ORTHOGONAL_DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1]]
 DIAGONAL_DIRS = [[1, 1], [-1, -1], [1, -1], [-1, 1]]
 
-def moves(self):
+def moves(self) -> list:
     """
     This method generates an array of possible movement locations.
     The possible directions a piece can go is retrieved from the _move_dirs attribute
@@ -30,7 +30,7 @@ def moves(self):
             moves.append(move)
     return moves
 
-def grow_unblocked_moves_in_dir(self, direction):
+def grow_unblocked_moves_in_dir(self, direction: list) -> list:
     """
     Taking a direction from moves(),
     this method steps along a direction until it finds

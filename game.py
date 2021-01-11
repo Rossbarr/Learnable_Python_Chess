@@ -11,15 +11,15 @@ class Game:
         self.__set_up_game()
         self.__set_up_display()
 
-    def move(self, start_pos, end_pos, *promotion):
+    def move(self, start_pos: list, end_pos: list, promotion: str = "") -> None:
         """
         Try to move the piece
         Otherwise, print to console why we couldn't
         If we could move the piece, switch players and check for checkmate.
         """
         try:
-            self.board.move(self.current_player, start_pos, end_pos, *promotion)
-            if promotion is not ():
+            self.board.move(self.current_player, start_pos, end_pos, promotion)
+            if promotion is not "":
                 self.display._destroy_buttons()
         except Exception as err:
             print("Exception occured: {}".format(err))
@@ -28,7 +28,7 @@ class Game:
         self.switch_player()
         self.check_for_checkmate()
 
-    def switch_player(self):
+    def switch_player(self) -> None:
         """
         switch the current player
         """
@@ -37,7 +37,7 @@ class Game:
         else:
             self.current_player = self.players[0]
         
-    def check_for_checkmate(self):
+    def check_for_checkmate(self) -> None:
         """
         ...
         Check for checkmate
@@ -48,7 +48,7 @@ class Game:
             self.switch_player()
             print("{} wins!".format(self.current_player))
 
-    def reset(self):
+    def reset(self) -> None:
         """
         Reset the game
         Making a new board.
@@ -56,7 +56,7 @@ class Game:
         self.__set_up_game()
         self.display.board = self.board
 
-    def __set_up_game(self):
+    def __set_up_game(self) -> None:
         """
         Set up the game,
         creating a board
@@ -64,7 +64,7 @@ class Game:
         self.current_player = self.players[0]
         self.board = board.Board()
 
-    def __set_up_display(self):
+    def __set_up_display(self) -> None:
         """
         Set up the display.
         initializing a Display and giving it the board.

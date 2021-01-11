@@ -14,7 +14,7 @@ class Display(tk.Frame):
     To be honest, I'm still not sure how tkinter works,
     but to get some functionally to our display we'll inherit from tk.Frame.
     """
-    def __init__(self, main, game, board):
+    def __init__(self, main: object, game: object, board: object):
         """
         Arguments:
             Tk objects like button, frame, etc. require a reference to the "thing" they're in.
@@ -49,7 +49,7 @@ class Display(tk.Frame):
         self.__create_statusbar()
         self.draw_pieces()
 
-    def click(self, event):
+    def click(self, event) -> None:
         """
         When a click occurs, we use the event to get the position
         of the click.
@@ -101,7 +101,7 @@ class Display(tk.Frame):
             self.refresh()
             # no need to redraw pieces as they can't have moved.
 
-    def refresh(self, event=None):
+    def refresh(self, event=None) -> None:
         """
         This method refreshed the squares, not the pieces.
         As in, the color of the squares beneath the pieces is updated accordingly.
@@ -154,7 +154,7 @@ class Display(tk.Frame):
         self.canvas.tag_raise("piece")
         self.canvas.tag_lower("square")
 
-    def move(self, start_position, end_position):
+    def move(self, start_position: list, end_position: list) -> None:
         """
         Move a position from one place to another.
         """
@@ -169,7 +169,7 @@ class Display(tk.Frame):
         else:
             self.game.move(start_position, end_position)
 
-    def highlight(self, position):
+    def highlight(self, position: list) -> None:
         """
         Select the piece and
         highlight the squares we want to move to
@@ -181,7 +181,7 @@ class Display(tk.Frame):
             # highlight the squares the piece can move to
             self.highlighted = piece.valid_moves()
 
-    def draw_pieces(self):
+    def draw_pieces(self) -> None:
         """
         Like refresh, but for pieces.
 
@@ -207,7 +207,7 @@ class Display(tk.Frame):
                     # Place the piece on the square
                     self.addpiece(piecename, self.icons[filename], x, y)
         
-    def addpiece(self, name, image, x, y):
+    def addpiece(self, name: str, image: object, x: int, y: int) -> None:
         """
         Place the piece at the location
         """
@@ -216,7 +216,7 @@ class Display(tk.Frame):
         row = (y * 64) + 32
         self.canvas.create_image(row, column, image=image, tags=(name, "piece"), anchor="c")
 
-    def reset(self):
+    def reset(self) -> None:
         """
         Reset the board
         Used by the "New" button.
@@ -228,7 +228,7 @@ class Display(tk.Frame):
         self.refresh()
         self.draw_pieces()
 
-    def __create_board(self):
+    def __create_board(self) -> None:
         """
         Create the board.
         """
@@ -240,7 +240,7 @@ class Display(tk.Frame):
         self.canvas.bind("<Configure>", self.refresh)
         self.canvas.bind("<Button-1>", self.click)
 
-    def __create_statusbar(self):
+    def __create_statusbar(self) -> None:
         """
         Create the lower statusbar
         """
@@ -257,7 +257,7 @@ class Display(tk.Frame):
 
         self.statusbar.pack(expand=False, fill="x", side="bottom")
 
-    def __promote_pawn(self, start_position, end_position):
+    def __promote_pawn(self, start_position: list, end_position: list) -> None:
         """
         Create buttons for promoting pawns
         """
@@ -277,7 +277,7 @@ class Display(tk.Frame):
             command= lambda: self.game.move(start_position, end_position, "N"))
         self.button_knight.pack(side=tk.RIGHT, in_=self.statusbar)
 
-    def _destroy_buttons(self):
+    def _destroy_buttons(self) -> None:
         """
         Destroy the buttons for promoting a pawn
         (called by Game.)
