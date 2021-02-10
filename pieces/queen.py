@@ -19,7 +19,8 @@ class Queen(Piece):
         and they are shared among all pieces.
 
         Symbol is another common attribute among pieces.
-        It's a quick way for something to get the type of piece it's referencing.
+        It's a quick way for something to get the type of piece it's 
+        referencing.
 
         Lastly, _move_dirs sets the movement directions of the Queen.
         Since Queens can move orthogonally and diagonally, we use both.
@@ -27,4 +28,3 @@ class Queen(Piece):
         super().__init__(color, board, pos)
         self.symbol = "Q"
         self._move_dirs = s.ORTHOGONAL_DIRS + s.DIAGONAL_DIRS
-

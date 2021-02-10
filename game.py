@@ -11,14 +11,19 @@ class Game:
         self.__set_up_game()
         self.__set_up_display()
 
-    def move(self, start_pos: list, end_pos: list, promotion: str = "") -> None:
+    def move(self, 
+             start_pos: list, 
+             end_pos: list, 
+             promotion: str = "") -> None:
         """
-        Try to move the piece
-        Otherwise, print to console why we couldn't
-        If we could move the piece, switch players and check for checkmate.
+        Try to move the piece.
+        Otherwise, print to console why we couldn't.
+        If we could move the piece, 
+            switch players and check for checkmate.
         """
         try:
-            self.board.move(self.current_player, start_pos, end_pos, promotion)
+            self.board.move(self.current_player, start_pos, end_pos, 
+                            promotion)
             if promotion is not "":
                 self.display._destroy_buttons()
         except Exception as err:
@@ -71,7 +76,8 @@ class Game:
         """
         root = tk.Tk()
         self.display = display.Display(root, self, self.board)
-        self.display.pack(side="top", fill="both", expand="true", padx=4, pady=4)
+        self.display.pack(side="top", fill="both", expand="true", padx=4, 
+                          pady=4)
         root.mainloop()
 
 if __name__ == "__main__":

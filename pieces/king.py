@@ -12,18 +12,21 @@ class King(Piece):
         and they are shared among all pieces.
 
         Symbol is another common attribute among pieces.
-        It's a quick way for something to get the type of piece it's referencing.
+        It's a quick way for something to get the type of piece it's 
+        referencing.
 
         _move_diffs defines the movement options for the King.
         """
         super().__init__(color, board, pos)
         self.symbol = "K"
-        self._move_diffs = [[0, 1], [1, 1], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1], 
+        self._move_diffs = [[0, 1], [1, 1], [1, 0], [1, -1], 
+                            [0, -1], [-1, -1], [-1, 0], [-1, 1], 
                             [0, 2], [0, -2]]
 
     def moves(self) -> list:
         """
-        This methods gets the possible movement options from _move_diffs.
+        This methods gets the possible movement options from 
+        _move_diffs.
         It then checks if those moves are allowed:
         It checks if the new position is valid (on the board) and
         if the position is empty or contains an enemy piece.
@@ -55,7 +58,8 @@ class King(Piece):
                     self.board.empty([x, 5]) and 
                     self.board.empty([x, 6])):
                     moves.append(new_pos)
-            elif (self.board.valid(new_pos) and 
-                    (self.board.empty(new_pos) or self.board.rows[x+dx, y+dy].color != self.color)):
+            elif (self.board.valid(new_pos) 
+                  and (self.board.empty(new_pos) 
+                    or self.board.rows[x+dx, y+dy].color != self.color)):
                 moves.append(new_pos)
         return moves

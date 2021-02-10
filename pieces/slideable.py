@@ -4,7 +4,8 @@ In this case, it will be imported into Queen, Rook, and Bishop.
 
 Slideable pieces can move indefinitly along an empty line.
 
-The pieces themselves dictate whether they can move orthogonoally, diagonally, or both.
+The pieces themselves dictate whether they can move orthogonoally, 
+diagonally, or both.
 They do this by asking for the constants defined immediately below.
 """
 
@@ -14,8 +15,10 @@ DIAGONAL_DIRS = [[1, 1], [-1, -1], [1, -1], [-1, 1]]
 def moves(self) -> list:
     """
     This method generates an array of possible movement locations.
-    The possible directions a piece can go is retrieved from the _move_dirs attribute
-    which, depending on the piece, contains ORTHOGONAL_DIRS and/or DIAGONAL_DIRS.
+    The possible directions a piece can go is retrieved from the 
+    _move_dirs attribute
+    which, depending on the piece, contains ORTHOGONAL_DIRS and/or 
+    DIAGONAL_DIRS.
 
     It then steps along this direction until it is somehow blocked,
     (see grow_unblocked_moves_in_dir(direction))
@@ -37,12 +40,15 @@ def grow_unblocked_moves_in_dir(self, direction: list) -> list:
         1. the new position is invalid (i.e. off the board)
             The stepping immediately breaks and returns
         2. the new position contains an enemy piece
-            The stepping adds the enemy piece location to it's array and returns
+            The stepping adds the enemy piece location to it's array 
+            and returns
         3. the new position contains a friendly piece
             The stepping immediately breaks and returns
-    Until one of these 3 things is met, it will add the position to it's list.
+    Until one of these 3 things is met, it will add the position to 
+    it's list.
 
-    The return value is an array of possible movement locations along a direction.    
+    The return value is an array of possible movement locations along a 
+    direction.    
     """
     x, y = self.pos
     dx, dy = direction

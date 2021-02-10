@@ -12,9 +12,11 @@ class Pawn(Piece):
         and they are shared among all pieces.
 
         Symbol is another common attribute among pieces.
-        It's a quick way for something to get the type of piece it's referencing.
+        It's a quick way for something to get the type of piece it's 
+        referencing.
 
-        forward is the forward direction the Pawn moves, see __forward_dir().
+        forward is the forward direction the Pawn moves, see 
+        __forward_dir().
         """
         super().__init__(color, board, pos)
         self.symbol = "p"
@@ -22,7 +24,8 @@ class Pawn(Piece):
 
     def moves(self) -> list:
         """
-        Returns a list of the possible forward movements and diagonal attacks
+        Returns a list of the possible forward movements and diagonal 
+        attacks
         given the current positioning of the Pawn and nearby pieces.
         """
         forwards = self.__forward_steps()
@@ -60,8 +63,10 @@ class Pawn(Piece):
         if self.board.empty([x + forward, y]):
             moves.append([x + forward, y])
             # The next line is intentionally nested
-            # as, if there's something immediately in front of the Pawn, it is stuck anyway
-            if not self.moved and self.board.empty([x + forward + forward, y]):
+            # as, if there's something immediately in front of the 
+            # Pawn, it is stuck anyway
+            if (not self.moved 
+                and self.board.empty([x + forward + forward, y])):
                 moves.append([x + forward + forward, y])
 
         return moves
@@ -82,14 +87,19 @@ class Pawn(Piece):
             if self.board.rows[x + forward, y + 1].color != self.color:
                 moves.append(right)
         if x == 3 and forward == -1 and self.board.last_move[0].symbol == "p":
-            if self.board.last_move[1] == [1, y - 1] and self.board.last_move[2] == [3, y - 1]:
+            if (self.board.last_move[1] == [1, y - 1] 
+                and self.board.last_move[2] == [3, y - 1]):
                 moves.append(left)
-            if self.board.last_move[1] == [1, y + 1] and self.board.last_move[2] == [3, y + 1]:
+            if (self.board.last_move[1] == [1, y + 1] 
+                and self.board.last_move[2] == [3, y + 1]):
                 moves.append(right)
-        elif x == 4 and forward == 1  and self.board.last_move[0].symbol == "p":
-            if self.board.last_move[1] == [6, y - 1] and self.board.last_move[2] == [4, y - 1]:
+        elif (x == 4 and forward == 1 
+              and self.board.last_move[0].symbol == "p"):
+            if (self.board.last_move[1] == [6, y - 1] 
+                and self.board.last_move[2] == [4, y - 1]):
                 moves.append(left)
-            if self.board.last_move[1] == [6, y + 1] and self.board.last_move[2] == [4, y + 1]:
+            if (self.board.last_move[1] == [6, y + 1] 
+                and self.board.last_move[2] == [4, y + 1]):
                 moves.append(right)
 
         return moves

@@ -1,15 +1,12 @@
 """
 This file contains the Board class.
 The board itself handles coordinating with pieces to move them around.
-"""
 
-"""
 To explain the imports below:
 
-A 2D numpy array is used to store the board and all the pieces on it (see below)
+A 2D numpy array is used to store the board and all the pieces on it.
 sys is imported to append the pieces folder for the search path.
-deepcopy, from copy, is imported as a deepcopy is used to check if moves are valid,
-more on that below.
+deepcopy, from copy, is used to check if moves are valid.
 """
 
 import numpy as np
@@ -36,8 +33,8 @@ class Board:
 
     def __init__(self):
         """
-        When a board is initialized, going in order of the statements below:
-        
+        When a board is initialized:
+
         1. Initialize a NullPiece to be placed in the empty squares.
 
         2. Set last_move to nothing
@@ -45,11 +42,12 @@ class Board:
         3. Create an empty 2D numpy array
 
         4. Call __fill_back_row()
-            Fills the back rows on both sides, filling them with pieces.
-            (I'd recommend looking at this method next, or just trust it works)
+            Fills the back rows on both sides with pieces.
+            (I'd recommend looking at this method next.)
+            (It's near the end of this file.)
 
         5. Call __fill_pawns_row()
-            Fills the pawn rows on both sides, filling them with pawns.
+            Fills the rows of pawns on both sides.
             (I'd recommend looking at this method after the above one.)
         """
         self.nothing = NullPiece()
@@ -58,22 +56,24 @@ class Board:
         self.__fill_back_row()
         self.__fill_pawns_row()
 
-    def move(self, color: str, start_pos: list, end_pos: list, promotion: str = "") -> None:
+    def move(self, color: str, start_pos: list, end_pos: list, 
+             promotion: str = "") -> None:
         """
-        move, as the name implies, moves a piece from one square to another.
+        This method moves a piece from one square to another.
         The Game object will call this method, giving:
             1. the color of the current player
             2. the starting position the player clicked
             3. the ending position the player clicked.
-            4. (optional) the piece button the player clicked (ONLY WHEN PROMOTING)
+            4. (optional) the piece button the player clicked
+                (ONLY WHEN PROMOTING).
 
         This method then checks that everything is in order:
-            there's a piece,
-            the piece is the player's,
-            the piece can move like that,
-            the move doesn't move into check.
+            1. there's a piece,
+            2. the piece is the player's,
+            3. the piece can move like that,
+            4. the move doesn't move into check.
         
-        If all this works, then it executes the move.
+        If nothing is raised, it executes the move.
         """
         a, b = start_pos
        
@@ -110,12 +110,14 @@ class Board:
         """
 
         # Can't be in checkmate if we're not in check.
-        if not self.in_check(color): return False
+        if not self.in_check(color): 
+            return False
 
         # Find all the pieces of that color
         pieces = self.find_pieces(color)
         for piece in pieces:
-            # If one of them has a valid move, then we're not in checkmate.
+            # If one of them has a valid move, 
+            #   then we're not in checkmate.
             if len(piece.valid_moves()) > 0:
                 return False
         
@@ -156,7 +158,8 @@ class Board:
         pieces = []
         for i in range(8):
             for j in range(8):
-                if self.rows[i, j] != self.nothing and self.rows[i, j].color == color:
+                if (self.rows[i, j] != self.nothing 
+                    and self.rows[i, j].color == color):
                     pieces.append(self.rows[i, j])
         return pieces
 
@@ -166,44 +169,56 @@ class Board:
         """
         for i in range(8):
             for j in range(8):
-                if self.rows[i, j].symbol == "K" and self.rows[i, j].color == color:
+                if (self.rows[i, j].symbol == "K" 
+                    and self.rows[i, j].color == color):
                     return [i, j]
         raise Exception("King not found")
 
-    def _execute_move(self, color: str, start_pos: list, end_pos: list, promotion: str = "") -> None:
+    def _execute_move(self, color: str, 
+                      start_pos: list, 
+                      end_pos: list, 
+                      promotion: str = "") -> None:
         """
         This method executes a move without doing any checks.
-        As in, this is the method that actually does the moving.
+        As in, this is the method that actually does the moving;
         move() calls this method.
 
-        Why separate?
         This is useful for checking if a move places one into check.
         
-        When a piece is asked to move, it creates a deepcopy of the board.
-        It then forces this board copy to make a move, and
-        it checks if the resulting position creates a check for oneself.
-        If it does, that move cannot be played and a false is returned.
-        See piece.__moves_into_check() for more.
+        When a piece is asked to move, it's hard to determine if the
+            resulting position would leave the player in check.
+        A move that "checks yourself" is not allowed.
+
+        In order to check for self-check,
+            1. the piece makes a deepcopy of the board,
+            2. the board is forced to make the move, and
+            3. the board checks if the player is in check.
+
+        See piece.__moves_into_check(...) for more.
         """
         a, b = start_pos
         x, y = end_pos
 
         piece = self.rows[a, b]
+
         # If we're trying to castle...
         if piece.symbol == "K" and abs(b - y) == 2:
             self.__castle(color, start_pos, end_pos)
+
         # If we're trying to promote...
-        elif (piece.symbol == "p" and 
-                (x == 0 or x == 7)):
+        elif (piece.symbol == "p" 
+              and (x == 0 or x == 7)):
             self.__promote_pawn(color, start_pos, end_pos, promotion)
+
         # If we want to play en passent...
-        elif (piece.symbol == "p" and
-                self.last_move[0].symbol == "p" and
-                abs(self.last_move[2][0] - self.last_move[1][0]) == 2 and
-                (a == 3 and color == "white" or
-                a == 4 and color == "black") and
-                abs(y - b) == 1):
+        elif (piece.symbol == "p" 
+              and self.last_move[0].symbol == "p" 
+              and abs(self.last_move[2][0] - self.last_move[1][0]) == 2 
+              and (a == 3 and color == "white" 
+                or a == 4 and color == "black") 
+              and abs(y - b) == 1):
             self.__en_passent(color, start_pos, end_pos)
+
         # Otherwise...
         else:
             # Set the end position to be the piece.
@@ -230,7 +245,7 @@ class Board:
         # grab the king
         king = self.rows[a, b]
         # left castle
-        if y - b == -2:
+         if y - b == -2:
             # grab the rook
             rook = self.rows[a, 0]
             # move the king
@@ -272,7 +287,8 @@ class Board:
             # set the last move
             self.last_move = (king, start_pos, end_pos)
 
-    def __en_passent(self, color: str, start_pos: list, end_pos: list) -> None:
+    def __en_passent(self, color: str, start_pos: list, 
+                     end_pos: list) -> None:
         """
         This method handles the logic for playing en passent
 
@@ -292,7 +308,8 @@ class Board:
         self.rows[a, b] = self.nothing
         self.last_move = (piece, start_pos, end_pos)
 
-    def __promote_pawn(self, color: str, start_pos: list, end_pos: list, promotion: str) -> None:
+    def __promote_pawn(self, color: str, start_pos: list, end_pos: list, 
+                       promotion: str) -> None:
         """
         This method handles the logic for promoting
 
@@ -332,7 +349,8 @@ class Board:
         # We iterate through every square...
         for i in range(8):
             for j in range(8):
-                # if the square is the first or last row, set the color appropriately
+                # if the square is the first or last row, 
+                # set the color appropriately
                 # otherwise ignore that row.
                 if i == 0:
                     color = "black"
@@ -351,7 +369,8 @@ class Board:
         """
         This method fills the rows holding all the pawns, rows 1 and 6.
         It works very similarly to __fill_back_row().
-        If you can understand the above method, you can understand this one
+        If you can understand the above method, 
+        you can understand this one
         and vice versa.
         """
         for i in range(8):

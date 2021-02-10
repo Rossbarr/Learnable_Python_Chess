@@ -12,30 +12,41 @@ from PIL import ImageTk
 class Display(tk.Frame):
     """
     To be honest, I'm still not sure how tkinter works,
-    but to get some functionally to our display we'll inherit from tk.Frame.
+    but to get some functionally to our display 
+        we'll inherit from tk.Frame.
     """
     def __init__(self, main: object, game: object, board: object):
         """
         Arguments:
-            Tk objects like button, frame, etc. require a reference to the "thing" they're in.
-            This is usually called "master", but I called it main for the same reasons github does.
+            main is a reference to the "thing" the display is in
+                Tk objects like button, frame, etc. 
+                require this type of reference.
+                This is usually called "master", 
+                but I called it main for the same reasons github does.
 
-            The display needs to know the game object it's apart of so it can reference methods when necessarily.
+            game is the game object
+                This way, display can call some methods more easily.
 
-            Additionally, display needs to know the board so that it can render it as it changes.
+            board references the actual board
+                so it can update the display accordingly.
 
         Attributes:
             selected_piece is the piece object which was last clicked.
-            Once you select a piece, you decide where to move it.
+                Once you select a piece, you decide where to move it.
 
-            highlighted is a list of valid moves that the selected piece can make.
-            If you click a non-highlighted square, the selected_piece is dropped.
+            highlighted is a list of valid moves 
+                that the selected piece can make.
+                If you click a non-highlighted square, 
+                the selected_piece is dropped.
 
-            icons assists in printing the images of the pieces to the screen.
-            It's a dictionary of each piece to its appropriate image file.
-            A white pawn, for example, will have it's own image. So will a black pawn.
-            draw_pieces() fills this dictionary the first time it's called.
-            To understand icons better, go to the draw_pieces() comments.
+            icons assists in printing the images of the pieces to the 
+                screen.
+                It's a dictionary of each piece to its image file.
+                A white pawn, for example, will have it's own image. 
+                So will a black pawn.
+                draw_pieces() fills this dictionary.
+                To understand the icons attribute better, 
+                go to the draw_pieces() comments.
         """
         self.main = main
         main.title("Chessboard") # This just changes the window title.
@@ -54,17 +65,22 @@ class Display(tk.Frame):
         When a click occurs, we use the event to get the position
         of the click.
 
-        We then use that position to determine what square and piece we clicked, if any.
-        The console prints out our clicked position (was useful for debugging, can be deleted).
+        We then use that position to determine what square and piece we 
+        clicked, if any.
+        The console prints out our clicked position 
+        (this was useful for debugging, but it can be deleted).
 
-        The first time we click, if we click our piece, that piece is seleted.
+        The first time we click, if we click our piece, that piece is 
+        seleted.
         The squares that piece can move to are then highlighted.
         
-        If we then click again, we attempt to move that piece to that position.
-        Regardless of whether or not the piece can move to that position,
-        we deselect the piece and unhighlight the squares.
+        If we then click again, we attempt to move that piece to that 
+        position.
+        Regardless of whether or not the piece can move to that 
+        position, we deselect the piece and unhighlight the squares.
 
-        This creates an intuitive user input for selecting, deselecting, and moving pieces.
+        This creates an intuitive user input for selecting, deselecting,
+        and moving pieces.
         """
         colsize = rowsize = 64
 
@@ -103,8 +119,9 @@ class Display(tk.Frame):
 
     def refresh(self, event=None) -> None:
         """
-        This method refreshed the squares, not the pieces.
-        As in, the color of the squares beneath the pieces is updated accordingly.
+        This method refreshes the squares, not the pieces.
+        As in, the color of the squares beneath the pieces is updated 
+        accordingly (for highlighting).
 
         tkinter requires refresh to have an optional event argument,
         even though we don't use it.
@@ -122,26 +139,33 @@ class Display(tk.Frame):
             # you can change these things around if you want.
             color = "white" if color == "grey" else "grey"
             for y in range(8):
-                # Squares are 64 by 64, set up the bounds for this square.
+                # Squares are 64 pixels by 64 pixels, 
+                # set up the bounds for this square.
                 column_start = (x * 64)
                 row_start = (y * 64)
                 column_end = column_start + 64
                 row_end = row_start + 64
 
-                # If we've selected this position, color the square orange
-                if self.selected_piece is not self.board.nothing and [x, y] == self.selected_piece.pos:
-                    self.canvas.create_rectangle(row_start, column_start, row_end, column_end, 
-                                                outline="black", fill="orange", tags="square")
-                
-                # if this square should be highlighted, color the square green
+                # If we've selected this position
+                if (self.selected_piece is not self.board.nothing 
+                    and [x, y] == self.selected_piece.pos):
+                    # color the square orange
+                    self.canvas.create_rectangle(row_start, column_start, 
+                        row_end, column_end, outline="black", fill="orange", 
+                        tags="square")
+
+                # if this square should be highlighted
                 elif [x, y] in self.highlighted:
-                    self.canvas.create_rectangle(row_start, column_start, row_end, column_end, 
-                                                outline="black", fill="spring green", tags="square")
+                    # color the square green
+                    self.canvas.create_rectangle(row_start, column_start, 
+                        row_end, column_end, outline="black", 
+                        fill="spring green", tags="square")
                 
-                # Otherwise, color it according to the color variable (white or black)
+                # color it by position (white or black)
                 else:
-                    self.canvas.create_rectangle(row_start, column_start, row_end, column_end, 
-                                                outline="black", fill=color, tags="square")
+                    self.canvas.create_rectangle(row_start, column_start, 
+                        row_end, column_end, outline="black", fill=color, 
+                        tags="square")
 
                 # change color
                 color = "white" if color == "grey" else "grey"
@@ -162,7 +186,8 @@ class Display(tk.Frame):
         x = end_position[0]
 
         # Promoting a pawn gets special treatement
-        # as we need to select what to promote into (Queen, Rook, Bishop, or Knight)
+        # as we need to select what to promote into 
+        # (Queen, Rook, Bishop, or Knight)
         if ((x == 0 or x == 7) and self.board.rows[a, b].symbol == "p"):
             self.__promote_pawn(start_position, end_position)
         # Otherwise, tell the game what move we wanna make.
@@ -175,7 +200,8 @@ class Display(tk.Frame):
         highlight the squares we want to move to
         """
         piece = self.board.rows[position[0], position[1]]
-        if piece is not self.board.nothing and piece.color == self.game.current_player:
+        if (piece is not self.board.nothing and 
+            piece.color == self.game.current_player):
             # select the piece
             self.selected_piece = piece
             # highlight the squares the piece can move to
@@ -185,7 +211,8 @@ class Display(tk.Frame):
         """
         Like refresh, but for pieces.
 
-        The first time this is called, an icons dictionary stores all the images
+        The first time this is called, 
+        an icons dictionary stores all the images
         for each piece in memory.
         This allows us to quickly call the iamges for the piece we need,
         instead of searching for the file each time.
@@ -198,12 +225,16 @@ class Display(tk.Frame):
                 piece = self.board.rows[x, y]
                 #If there's a piece here...
                 if piece is not self.board.nothing:
-                    filename = "img/%s%s.png" % (piece.color, piece.symbol.lower())
+                    filename = "img/%s%s.png" % (piece.color, 
+                                                 piece.symbol.lower())
                     piecename = "%s%s%s" % (piece.symbol, x, y)
 
                     if filename not in self.icons:
-                        self.icons[filename] = ImageTk.PhotoImage(file=filename, width=32, height=32)
-                    
+                        self.icons[filename] = ImageTk.PhotoImage(
+                            file=filename, 
+                            width=32, 
+                            height=32)
+
                     # Place the piece on the square
                     self.addpiece(piecename, self.icons[filename], x, y)
         
@@ -214,7 +245,8 @@ class Display(tk.Frame):
         # Put it in the center of the square.
         column = (x * 64) + 32
         row = (y * 64) + 32
-        self.canvas.create_image(row, column, image=image, tags=(name, "piece"), anchor="c")
+        self.canvas.create_image(row, column, image=image, 
+                                 tags=(name, "piece"), anchor="c")
 
     def reset(self) -> None:
         """
@@ -234,7 +266,8 @@ class Display(tk.Frame):
         """
         tk.Frame.__init__(self, self.main)
 
-        self.canvas = tk.Canvas(self, width=8*64, height=8*64, background="grey")
+        self.canvas = tk.Canvas(self, width=8*64, height=8*64, 
+                                background="grey")
         self.canvas.pack(side="top", fill="both", anchor="c", expand=True)
 
         self.canvas.bind("<Configure>", self.refresh)
@@ -246,13 +279,16 @@ class Display(tk.Frame):
         """
         self.statusbar = tk.Frame(self, height=64)
         
-        self.button_quit = tk.Button(self.statusbar, text="New", fg="black", command=self.reset)
+        self.button_quit = tk.Button(self.statusbar, text="New", fg="black", 
+                                     command=self.reset)
         self.button_quit.pack(side=tk.LEFT, in_=self.statusbar)
 
-        self.button_quit = tk.Button(self.statusbar, text="Quit", fg="black", command=self.main.destroy)
+        self.button_quit = tk.Button(self.statusbar, text="Quit", fg="black", 
+            command=self.main.destroy)
         self.button_quit.pack(side=tk.LEFT, in_=self.statusbar)
 
-        self.label_status = tk.Label(self.statusbar, text="{}'s turn".format(self.game.current_player), fg="black")
+        self.label_status = tk.Label(self.statusbar, 
+            text="{}'s turn".format(self.game.current_player), fg="black")
         self.label_status.pack(side=tk.LEFT, in_=self.statusbar)
 
         self.statusbar.pack(expand=False, fill="x", side="bottom")
@@ -269,11 +305,13 @@ class Display(tk.Frame):
             command= lambda: self.game.move(start_position, end_position, "R"))
         self.button_rook.pack(side=tk.RIGHT, in_=self.statusbar)
 
-        self.button_bishop = tk.Button(self.statusbar, text="Biship", fg="black", 
+        self.button_bishop = tk.Button(self.statusbar, text="Biship", 
+            fg="black", 
             command= lambda: self.game.move(start_position, end_position, "B"))
         self.button_bishop.pack(side=tk.RIGHT, in_=self.statusbar)
 
-        self.button_knight = tk.Button(self.statusbar, text="Knight", fg="black", 
+        self.button_knight = tk.Button(self.statusbar, text="Knight", 
+            fg="black", 
             command= lambda: self.game.move(start_position, end_position, "N"))
         self.button_knight.pack(side=tk.RIGHT, in_=self.statusbar)
 

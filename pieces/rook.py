@@ -19,10 +19,12 @@ class Rook(Piece):
         and they are shared among all pieces.
 
         Symbol is another common attribute among pieces.
-        It's a quick way for something to get the type of piece it's referencing.
+        It's a quick way for something to get the type of piece it's 
+        referencing.
 
         Lastly, _move_dirs sets the movement directions of the Rook.
-        Since Rooks can only move orthogonally (up and down), we use that.
+        Since Rooks can only move orthogonally (up and down), we use 
+        that.
         """
 
         super().__init__(color, board, pos)
