@@ -16,3 +16,5 @@ I hope this can help you.
 ## Requirements
 This Chess Program uses Python 3.8, although I'm fairly certain it'll work on any Python 3.
 It uses only packages in the standard library, most importantly numpy and tkinter.
+
+Chess itself is no easy project. I would only recommend trying to program chess if you're confident with your programming skills and are looking for a medium-hard project.
